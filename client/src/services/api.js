@@ -1,6 +1,20 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Fail-safe: if deployed to Vercel/Render but environment variables are missing,
+  // automatically point to your live Render backend server.
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:5000';
+  }
+  return 'https://acowale-assignment.onrender.com';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 
 const api = axios.create({
   baseURL: API_BASE_URL,

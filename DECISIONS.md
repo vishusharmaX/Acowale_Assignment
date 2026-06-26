@@ -85,3 +85,4 @@ Ensuring the dashboard charts didn't break or show visual anomalies when the dat
 * **AI Tools Used**: Gemini 3.5 Flash.
 * **Where AI Helped**: Formulating Mongoose aggregation pipelines for date-grouping and calculating category percentages in a single query.
 * **Where AI Was Wrong**: Initially suggested utilizing client-side calculations for dashboard chart trends, which would run slowly as the feedback database grew in production. I corrected this by moving the date aggregation directly into MongoDB.
+ 

@@ -20,12 +20,19 @@ connectDB();
 app.use(helmet());
 
 // Configure CORS
-const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigin = process.env.CLIENT_URL;
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or local testing tools)
-      if (!origin || origin === allowedOrigin || allowedOrigin === '*') {
+      // Allow requests with no origin (mobile app, curl, postman)
+      // or matching CLIENT_URL, or localhost variants
+      if (
+        !origin ||
+        allowedOrigin === '*' ||
+        origin === allowedOrigin ||
+        origin.startsWith('http://localhost:') ||
+        origin.startsWith('http://127.0.0.1:')
+      ) {
         callback(null, true);
       } else {
         callback(new Error('Blocked by CORS policy'));
@@ -34,6 +41,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json());
